@@ -1,0 +1,1 @@
+Drop index color_and_cotton;

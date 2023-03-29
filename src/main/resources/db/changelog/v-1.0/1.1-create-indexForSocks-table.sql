@@ -1,0 +1,1 @@
+CREATE INDEX color_and_cotton ON Socks (socks_color, socks_cotton);
