@@ -46,8 +46,10 @@ public class SocksServiceImpl implements SocksService {
             case (OPERATION_EQUALS):
                 log.info("Was invoked method for get all Socks where operation is " + OPERATION_EQUALS + " color is " + color + " and cotton equals " + cotton);
                 result += socksMapper.toRecordList(socksRepository.findSocksBySocksColorIgnoreCaseAndSocksCottonEquals(color, cotton)).stream().mapToInt(SocksRecord::getSocksCount).sum();
+                break;
             default:
                 log.error("No found element where color operation is " + operation + " + color is " + color + " and cotton equals " + cotton);
+                throw new ElemNotFoundChecked("No found element where color operation is " + operation);
         }
         if (result == 0) {
             log.error("No found element where color operation is " + operation + " + color is " + color + " and cotton equals " + cotton);
@@ -59,7 +61,7 @@ public class SocksServiceImpl implements SocksService {
     public void addCountSocks(SocksRecord socksRecord) {
         log.info(FormLogInfo.getInfo());
         SocksRecord check = socksMapper.socksToSocksRecord(socksRepository.findById(new SocksId(socksRecord.getSocksColor(), socksRecord.getSocksCotton())).orElse(null));
-        if(check == null){
+        if (check == null) {
             socksRepository.save(socksMapper.socksRecordToSocks(socksRecord));
             return;
         }

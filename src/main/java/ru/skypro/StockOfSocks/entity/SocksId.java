@@ -6,6 +6,10 @@ import lombok.experimental.FieldDefaults;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ *  Класс для составного ключа
+ */
+
 @Getter
 @Setter
 @ToString
