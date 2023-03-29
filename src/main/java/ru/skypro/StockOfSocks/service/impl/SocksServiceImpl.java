@@ -58,7 +58,15 @@ public class SocksServiceImpl implements SocksService {
 
     public void addCountSocks(SocksRecord socksRecord) {
         log.info(FormLogInfo.getInfo());
-        socksRepository.save(socksMapper.socksRecordToSocks(socksRecord));
+        SocksRecord check = socksMapper.socksToSocksRecord(socksRepository.findById(new SocksId(socksRecord.getSocksColor(), socksRecord.getSocksCotton())).orElse(null));
+        if(check == null){
+            socksRepository.save(socksMapper.socksRecordToSocks(socksRecord));
+            return;
+        }
+        int checkCount = check.getSocksCount() + socksRecord.getSocksCount();
+        check.setSocksCount(checkCount);
+        socksRepository.save(socksMapper.socksRecordToSocks(check));
+
     }
 
     public void removeCountSocks(SocksRecord socksRecord) {
@@ -70,10 +78,12 @@ public class SocksServiceImpl implements SocksService {
         if (checkCount == 0) {
             log.info("Удаляем носок так как количество ровно 0");
             socksRepository.delete(socksMapper.socksRecordToSocks(check));
+            return;
         } else if (checkCount > 0) {
             log.info("Сохраняем носки");
             check.setSocksCount(checkCount);
-            addCountSocks(check);
+            socksRepository.save(socksMapper.socksRecordToSocks(check));
+            return;
         }
         throw new ElemNotFoundChecked("Не возможно осуществить отпуск, так как фактически носок меньше");
     }

@@ -59,15 +59,15 @@ public class SocksController {
     @GetMapping
     public ResponseEntity<Integer> findCountOfSocksByColorAndCotton(
             @Parameter(description = "Цвет",
-                    example = "Красный")
+                    example = "Red")
             @RequestParam("color")
             @NotNull(message = "Обязательно нужно заполнить поле")
             @NotBlank(message = "Обязательно нужно заполнить поле")
-            @Size(min = 5, max = 50, message
-                    = "Название должно быть от 5 до 50 символов")
+            @Size(min = 1, max = 50, message
+                    = "Название должно быть от 1 до 50 символов")
             String color,
-            @Parameter(description = "Операция",
-                    example = "Из трех значений:  moreThan, lessThan, equal")
+            @Parameter(description = "Операция, из трех значений:  moreThan, lessThan, equal",
+                    example = "equal")
             @RequestParam(name = "operation")
             @NotNull(message = "Обязательно нужно заполнить поле")
             @NotBlank(message = "Обязательно нужно заполнить поле")
